@@ -2,6 +2,8 @@
 
 Document W6 popularity and long-tail recommendation experiments
 
+Compare page: https://github.com/sepriansiagian/Proyek-Sistem-Rekomendasi-Tiro/compare/main...dev?expand=1
+
 ## Summary
 
 - Preserve the original W6 baseline metrics and Top-10 artifacts.
