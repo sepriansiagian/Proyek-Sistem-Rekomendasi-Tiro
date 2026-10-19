@@ -1,0 +1,34 @@
+{
+  "popularity": {
+    "ndcg@10": 0.009220529600873937,
+    "catalog_coverage@10": 0.000791104469740254,
+    "catalog_items_recommended@10": 18,
+    "average_item_popularity@10": 1361.9062025316455,
+    "long_tail_exposure@10": 0.0,
+    "users_evaluated": 11850
+  },
+  "mf": {
+    "ndcg@10": 0.007549371420775362,
+    "catalog_coverage@10": 0.014987034676745923,
+    "catalog_items_recommended@10": 341,
+    "average_item_popularity@10": 578.5184556962025,
+    "long_tail_exposure@10": 8.438818565400844e-06,
+    "users_evaluated": 11850
+  },
+  "tfidf": {
+    "ndcg@10": 0.007292531897969896,
+    "catalog_coverage@10": 0.7170043510745836,
+    "catalog_items_recommended@10": 16314,
+    "average_item_popularity@10": 35.71648101265823,
+    "long_tail_exposure@10": 0.20566244725738397,
+    "users_evaluated": 11850
+  },
+  "mf_reranked": {
+    "ndcg@10": 0.007548210308757694,
+    "catalog_coverage@10": 0.01538258691161605,
+    "catalog_items_recommended@10": 350,
+    "average_item_popularity@10": 575.1369535864978,
+    "long_tail_exposure@10": 0.0004978902953586498,
+    "users_evaluated": 11850
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "relevant_rating_min": 4.0,
+  "top_k": 10,
+  "long_tail_max_train_interactions": 5,
+  "mf_factors": 32,
+  "mf_max_solver_iterations": 7000,
+  "tfidf_min_document_frequency": 2,
+  "tfidf_max_features": 100000,
+  "rerank_popularity_penalty": 1.0,
+  "rerank_long_tail_bonus": 1.0,
+  "candidate_file": "candidate_items_warm.csv",
+  "candidate_policy": "warm candidates minus each user's train items",
+  "evaluation_policy": "known train users with at least one relevant warm validation target",
+  "validation_evaluation_users": 11850,
+  "validation_relevant_warm_rows": 24707,
+  "candidate_items": 22753,
+  "tfidf_vocabulary_size": 26841,
+  "outputs_use": "validation sanity check; use a separate test split for final claims"
+}
