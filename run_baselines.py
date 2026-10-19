@@ -19,6 +19,11 @@ ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data"
 OUT = ROOT / "outputs" / "w6"
 CONFIG = {
+    "mf_method": "TruncatedSVD on sparse explicit user-item rating matrix",
+    "mf_rating_values": "explicit 1-5 ratings",
+    "popularity_definition": "training interaction count per item",
+    "tfidf_text_fields": ["title", "content_text_basic"],
+    "rerank_formula": "zscore(MF) - penalty * normalized_log_popularity + bonus * long_tail_indicator",
     "seed": 42,
     "relevant_rating_min": 4.0,
     "top_k": 10,
@@ -28,7 +33,7 @@ CONFIG = {
     "tfidf_min_document_frequency": 2,
     "tfidf_max_features": 100000,
     "rerank_popularity_penalty": 1.0,
-    "rerank_long_tail_bonus": 1.0,
+    "rerank_long_tail_bonus": 6.0,
     "candidate_file": "candidate_items_warm.csv",
     "candidate_policy": "warm candidates minus each user's train items",
     "evaluation_policy": "known train users with at least one relevant warm validation target",
@@ -207,6 +212,7 @@ def main():
                   validation_relevant_warm_rows=int(len(eligible)), candidate_items=len(item_ids),
                   mf_training_users=int(train.user_id.nunique()),
                   mf_training_interactions=int(len(train)),
+                  mf_training_unique_user_item_pairs=int(train.drop_duplicates(["user_id", "item_id"]).shape[0]),
                   tfidf_vocabulary_size=vocab_size,
                   outputs_use="validation sanity check; use a separate test split for final claims")
     (OUT / "config.json").write_text(json.dumps(config, indent=2), encoding="utf-8")

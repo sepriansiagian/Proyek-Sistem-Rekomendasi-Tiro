@@ -8,11 +8,11 @@
     "users_evaluated": 11850
   },
   "mf": {
-    "ndcg@10": 0.007549371420775362,
-    "catalog_coverage@10": 0.014987034676745923,
-    "catalog_items_recommended@10": 341,
-    "average_item_popularity@10": 578.5184556962025,
-    "long_tail_exposure@10": 8.438818565400844e-06,
+    "ndcg@10": 0.007827223148600449,
+    "catalog_coverage@10": 0.009537203885201951,
+    "catalog_items_recommended@10": 217,
+    "average_item_popularity@10": 605.6074936708861,
+    "long_tail_exposure@10": 0.0,
     "users_evaluated": 11850
   },
   "tfidf": {
@@ -24,11 +24,11 @@
     "users_evaluated": 11850
   },
   "mf_reranked": {
-    "ndcg@10": 0.007548210308757694,
-    "catalog_coverage@10": 0.01538258691161605,
-    "catalog_items_recommended@10": 350,
-    "average_item_popularity@10": 575.1369535864978,
-    "long_tail_exposure@10": 0.0004978902953586498,
+    "ndcg@10": 0.0078275681183319,
+    "catalog_coverage@10": 0.017931701314112425,
+    "catalog_items_recommended@10": 408,
+    "average_item_popularity@10": 602.8193333333334,
+    "long_tail_exposure@10": 0.003586497890295359,
     "users_evaluated": 11850
   }
 }

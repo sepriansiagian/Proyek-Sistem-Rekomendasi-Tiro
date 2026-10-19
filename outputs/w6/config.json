@@ -8,13 +8,24 @@
   "tfidf_min_document_frequency": 2,
   "tfidf_max_features": 100000,
   "rerank_popularity_penalty": 1.0,
-  "rerank_long_tail_bonus": 1.0,
+  "rerank_long_tail_bonus": 6.0,
   "candidate_file": "candidate_items_warm.csv",
   "candidate_policy": "warm candidates minus each user's train items",
   "evaluation_policy": "known train users with at least one relevant warm validation target",
   "validation_evaluation_users": 11850,
   "validation_relevant_warm_rows": 24707,
   "candidate_items": 22753,
+  "mf_training_users": 54483,
+  "mf_training_interactions": 427957,
   "tfidf_vocabulary_size": 26841,
-  "outputs_use": "validation sanity check; use a separate test split for final claims"
+  "outputs_use": "validation sanity check; use a separate test split for final claims",
+  "mf_method": "TruncatedSVD on sparse explicit user-item rating matrix",
+  "mf_rating_values": "explicit 1-5 ratings",
+  "popularity_definition": "training interaction count per item",
+  "tfidf_text_fields": [
+    "title",
+    "content_text_basic"
+  ],
+  "rerank_formula": "zscore(MF) - penalty * normalized_log_popularity + bonus * long_tail_indicator",
+  "mf_training_user_item_pairs": 427957
 }
