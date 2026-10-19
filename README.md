@@ -1,46 +1,47 @@
 # Proyek Sistem Rekomendasi Tiro
 
-## W6 — Bias Popularitas & Long Tail
+## W6 — Baseline dan sanity check
 
-### Menjalankan baseline
+### Persiapan
 
-Python 3.10+ dan paket `numpy`, `pandas`, serta `scipy` diperlukan. Dari root repository:
+Gunakan Python 3.10+ dan install dependensi berikut dari root repository:
 
 ```powershell
 python -m pip install numpy pandas scipy
-python run_baselines.py --output-dir outputs/w6_rerun_YYYYMMDD
 ```
 
-Gunakan nama folder keluaran baru untuk mempertahankan hasil terdahulu. Empat baseline yang dijalankan adalah popularity, Truncated SVD MF, TF-IDF CBF, dan MF popularity-aware reranking. Skrip menghasilkan `config.json`, `metrics.json`, `per_user_ndcg.csv`, dan `top_n_examples.csv` di folder yang dipilih.
-
-Eksperimen tambahan dapat dijalankan terpisah:
+### Jalankan empat baseline
 
 ```powershell
-python run_mf_rerank_sweep.py --output-dir outputs/w6_reranking_rerun_YYYYMMDD
-python run_long_tail_relevance_sweep.py --output-dir outputs/w6_long_tail_rerun_YYYYMMDD
-python run_observed_mf_comparator.py --output-dir outputs/w6_observed_mf_rerun_YYYYMMDD
-python run_sanity_audit.py --output-dir outputs/w6_sanity_rerun_YYYYMMDD
+python run_baselines.py --output-dir outputs/w6_final
 ```
 
-Observed-only MF menggunakan L-BFGS-B; fit 1.000 iterasi yang tercatat belum konvergen. Jangan menafsirkan hasilnya sebagai baseline terpilih.
+Skrip menjalankan Popularity, Truncated SVD MF, TF-IDF CBF, dan popularity-aware MF reranking. Hasilnya meliputi konfigurasi, metrik, NDCG per pengguna, dan contoh Top-10. Opsi `--output-dir` menyimpan run di folder baru sehingga hasil lama tidak tertimpa.
 
-### Data dan protokol evaluasi
+### Jalankan sanity check
 
-- `data/interactions_train.csv`: satu-satunya sumber interaksi untuk melatih model dan menghitung popularitas.
-- `data/interactions_validation.csv`: target evaluasi/pemilihan parameter; tidak digunakan untuk fitting model.
-- `data/candidate_items_warm.csv`: candidate warm yang sama untuk semua model, sebanyak 22.753 item.
-- `data/items.csv`: metadata produk untuk TF-IDF.
-- Relevansi: rating validation ≥ 4; Top-10; item yang telah dilihat pengguna pada training dikeluarkan.
-- Long-tail: jumlah interaksi training item ≤ 5.
+Sanity check membaca baseline tersimpan di `outputs/w6/metrics.json`, membangun ulang ranking, lalu memeriksa jumlah rekomendasi, keunikan item, filtering item yang sudah dilihat, dan kecocokan metrik.
 
-Validation sudah dipakai memilih konfigurasi. Tidak ada test set independen yang ditemukan; hasil sweep bukan evaluasi final independen.
+```powershell
+python run_sanity_audit.py --output-dir outputs/w6_sanity_final
+```
 
-### Lokasi artefak yang tercatat
+Gunakan baseline yang tersimpan di `outputs/w6/` sebagai input audit. Jangan menghapus atau mengganti file baseline tersebut sebelum audit selesai.
 
-- `outputs/w6/`: baseline utama, konfigurasi, metrik, NDCG per pengguna, contoh Top-10, dan sanity check.
-- `outputs/w6_followup/`: sweep reranking awal, perbandingan MF, serta fit observed-only MF 25/150/500/1.000 iterasi dan faktor tersimpan.
-- `outputs/w6_long_tail_relevance/`: sweep gated reranking, protokol, Recall@10 long-tail, dan tabel gabungan.
-- `docs/`: tabel ringkasan, draf Method Overleaf, ringkasan Progress Report W6, catatan AI, kontribusi, review, dan draf PR. `method_w6_overleaf.tex` dapat diunggah ke Overleaf.
-- `run_sanity_audit.py`: menghitung ulang ranking/metric checks dan menyimpan audit serta contoh Top-10 ke folder baru.
+### Data dan aturan evaluasi
 
-Kode keluaran default masih menunjuk folder historis. Untuk rerun, gunakan `--output-dir` baru seperti contoh di atas agar artefak lama tidak tertimpa.
+- `data/interactions_train.csv`: data untuk fitting model dan menghitung popularitas.
+- `data/interactions_validation.csv`: target evaluasi; tidak dipakai untuk fitting.
+- `data/candidate_items_warm.csv`: candidate set yang sama untuk seluruh baseline.
+- `data/items.csv`: metadata produk untuk TF-IDF CBF.
+- Relevansi: rating validation ≥4; cutoff Top-10.
+- Item yang sudah dilihat pengguna pada training dikeluarkan dari rekomendasi.
+- Long-tail: jumlah interaksi training item ≤5.
+
+### Output utama
+
+- `outputs/w6/`: konfigurasi, metrik, NDCG per pengguna, contoh Top-10, dan sanity check yang sudah tersimpan.
+- `outputs/w6_sanity_rerun/`: hasil sanity check run tambahan.
+- `outputs/w6_sanity_final/`: folder contoh untuk hasil sanity check baru.
+
+Validation telah digunakan untuk evaluasi; data yang tersedia tidak mencakup test set independen.

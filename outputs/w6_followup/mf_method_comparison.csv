@@ -1,3 +1,0 @@
-config,penalty,tail_bonus,ndcg@10,catalog_coverage@10,average_item_popularity@10,long_tail_exposure@10,long_tail_slots,relevant_long_tail_slots,users_evaluated,unique_recommended_items,comparison
-svd_mf_reference,,,0.007827223148600449,0.009537203885201951,605.6074936708861,0.0,0,0,11850,217,SVD zero-filled MF
-observed_only_mf_reference,,,0.0002136496587938852,0.002812815892409792,15.690810126582278,0.0,0,0,11850,64,Observed-only MF
