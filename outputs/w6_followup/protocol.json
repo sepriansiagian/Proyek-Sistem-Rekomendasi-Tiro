@@ -1,0 +1,69 @@
+{
+  "output_directory": "C:\\SEMES_7\\SISREK\\ProjectSisrek\\outputs\\w6_followup",
+  "baseline_output_directory_untouched": "C:\\SEMES_7\\SISREK\\ProjectSisrek\\outputs\\w6",
+  "candidate_count": 22753,
+  "evaluation_users": 11850,
+  "relevant_validation_rows": 24707,
+  "relevance_rating_min": 4.0,
+  "top_k": 10,
+  "long_tail_definition": "train item interaction count <= 5",
+  "success_criterion": "NDCG@10 >= SVD MF reference * 0.95 and long-tail exposure > SVD MF reference",
+  "max_relative_ndcg_drop": 0.05,
+  "test_set_available": false,
+  "reranking_formula": "zscore(MF) - lambda * normalized_log_train_popularity + beta * long_tail_indicator",
+  "sweep": [
+    {
+      "name": "svd_mf_reference",
+      "penalty": null,
+      "tail_bonus": null
+    },
+    {
+      "name": "penalty_1_bonus_0",
+      "penalty": 1.0,
+      "tail_bonus": 0.0
+    },
+    {
+      "name": "penalty_2_bonus_0",
+      "penalty": 2.0,
+      "tail_bonus": 0.0
+    },
+    {
+      "name": "penalty_0_bonus_4",
+      "penalty": 0.0,
+      "tail_bonus": 4.0
+    },
+    {
+      "name": "penalty_0_bonus_8",
+      "penalty": 0.0,
+      "tail_bonus": 8.0
+    },
+    {
+      "name": "penalty_0_bonus_12",
+      "penalty": 0.0,
+      "tail_bonus": 12.0
+    },
+    {
+      "name": "penalty_1_bonus_6_current",
+      "penalty": 1.0,
+      "tail_bonus": 6.0
+    },
+    {
+      "name": "penalty_1_bonus_10",
+      "penalty": 1.0,
+      "tail_bonus": 10.0
+    },
+    {
+      "name": "penalty_2_bonus_12",
+      "penalty": 2.0,
+      "tail_bonus": 12.0
+    }
+  ],
+  "observed_only_mf": {
+    "factors": 32,
+    "optimizer": "L-BFGS-B",
+    "max_iterations": 25,
+    "lambda_factors": 0.1,
+    "lambda_bias": 0.1,
+    "loss_scope": "observed training rows only; missing pairs contribute no rating error"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "success": false,
+  "message": "STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT",
+  "iterations": 25,
+  "objective_initial": 229628.4919078987,
+  "objective_final": 129351.1681962299,
+  "observed_train_rows": 427957,
+  "unobserved_cells_in_objective": 0,
+  "objective": "0.5*sum_observed((r_ui - mu - b_u - b_i - p_u.q_i)^2) + L2 regularization",
+  "score_metrics": {
+    "config": "observed_only_mf_reference",
+    "penalty": null,
+    "tail_bonus": null,
+    "ndcg@10": 0.0002136496587938852,
+    "catalog_coverage@10": 0.002812815892409792,
+    "average_item_popularity@10": 15.690810126582278,
+    "long_tail_exposure@10": 0.0,
+    "long_tail_slots": 0,
+    "relevant_long_tail_slots": 0,
+    "users_evaluated": 11850,
+    "unique_recommended_items": 64
+  }
+}

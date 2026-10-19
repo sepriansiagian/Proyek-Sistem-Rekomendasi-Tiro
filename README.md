@@ -1,36 +1,46 @@
 # Proyek Sistem Rekomendasi Tiro
-git clone [https://github.com/USERNAME/REPOSITORY_NAME.git](https://github.com/USERNAME/REPOSITORY_NAME.git)
-cd REPOSITORY_NAME
-python -m venv venv
-# Di Linux/macOS:
-source venv/bin/activate
-# Di Windows:
-venv\Scripts\activate
 
-Install the Python packages used by the W6 runner:
+## W6 — Bias Popularitas & Long Tail
+
+### Menjalankan baseline
+
+Python 3.10+ dan paket `numpy`, `pandas`, serta `scipy` diperlukan. Dari root repository:
 
 ```powershell
 python -m pip install numpy pandas scipy
+python run_baselines.py --output-dir outputs/w6_rerun_YYYYMMDD
 ```
-## W6: Bias Popularitas & Long Tail
 
-Run the baseline and reranking sanity check from the repository root:
+Gunakan nama folder keluaran baru untuk mempertahankan hasil terdahulu. Empat baseline yang dijalankan adalah popularity, Truncated SVD MF, TF-IDF CBF, dan MF popularity-aware reranking. Skrip menghasilkan `config.json`, `metrics.json`, `per_user_ndcg.csv`, dan `top_n_examples.csv` di folder yang dipilih.
+
+Eksperimen tambahan dapat dijalankan terpisah:
 
 ```powershell
-python run_baselines.py
+python run_mf_rerank_sweep.py --output-dir outputs/w6_reranking_rerun_YYYYMMDD
+python run_long_tail_relevance_sweep.py --output-dir outputs/w6_long_tail_rerun_YYYYMMDD
+python run_observed_mf_comparator.py --output-dir outputs/w6_observed_mf_rerun_YYYYMMDD
+python run_sanity_audit.py --output-dir outputs/w6_sanity_rerun_YYYYMMDD
 ```
 
-The pipeline derives popularity, rating-matrix factorization, TF-IDF vocabulary/IDF,
-and user content profiles from training data. Validation is used only for
-metrics and recommendation examples. It ranks the warm candidate catalog after
-removing items already interacted with by each user. Relevance is rating >= 4,
-the reported cutoff is Top-10, and long-tail means at most five training
-interactions. Results are written to `outputs/w6/` (`config.json`,
-`metrics.json`, `per_user_ndcg.csv`, and `top_n_examples.csv`).
+Observed-only MF menggunakan L-BFGS-B; fit 1.000 iterasi yang tercatat belum konvergen. Jangan menafsirkan hasilnya sebagai baseline terpilih.
 
-The initial reranker uses a z-normalized MF score, subtracts normalized log
-popularity, and adds a fixed bonus to items with at most five training
-interactions. Its penalty and bonus are recorded in the experiment config.
-MF uses truncated SVD over the sparse explicit 1–5 rating matrix. TF-IDF
-uses `title` and `content_text_basic`; item popularity is the training
-interaction count.
+### Data dan protokol evaluasi
+
+- `data/interactions_train.csv`: satu-satunya sumber interaksi untuk melatih model dan menghitung popularitas.
+- `data/interactions_validation.csv`: target evaluasi/pemilihan parameter; tidak digunakan untuk fitting model.
+- `data/candidate_items_warm.csv`: candidate warm yang sama untuk semua model, sebanyak 22.753 item.
+- `data/items.csv`: metadata produk untuk TF-IDF.
+- Relevansi: rating validation ≥ 4; Top-10; item yang telah dilihat pengguna pada training dikeluarkan.
+- Long-tail: jumlah interaksi training item ≤ 5.
+
+Validation sudah dipakai memilih konfigurasi. Tidak ada test set independen yang ditemukan; hasil sweep bukan evaluasi final independen.
+
+### Lokasi artefak yang tercatat
+
+- `outputs/w6/`: baseline utama, konfigurasi, metrik, NDCG per pengguna, contoh Top-10, dan sanity check.
+- `outputs/w6_followup/`: sweep reranking awal, perbandingan MF, serta fit observed-only MF 25/150/500/1.000 iterasi dan faktor tersimpan.
+- `outputs/w6_long_tail_relevance/`: sweep gated reranking, protokol, Recall@10 long-tail, dan tabel gabungan.
+- `docs/`: tabel ringkasan, draf Method Overleaf, ringkasan Progress Report W6, catatan AI, kontribusi, review, dan draf PR. `method_w6_overleaf.tex` dapat diunggah ke Overleaf.
+- `run_sanity_audit.py`: menghitung ulang ranking/metric checks dan menyimpan audit serta contoh Top-10 ke folder baru.
+
+Kode keluaran default masih menunjuk folder historis. Untuk rerun, gunakan `--output-dir` baru seperti contoh di atas agar artefak lama tidak tertimpa.

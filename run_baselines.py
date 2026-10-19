@@ -6,6 +6,7 @@ metadata. Validation is read only for ranking metrics and examples.
 from __future__ import annotations
 
 import json
+import argparse
 import re
 from collections import Counter
 from pathlib import Path
@@ -193,9 +194,10 @@ def summarize(all_recs, metric_rows, item_ids, popularity, tail):
     return summaries
 
 
-def main():
+def main(output_dir=OUT):
     np.random.seed(CONFIG["seed"])
-    OUT.mkdir(parents=True, exist_ok=True)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
     train, valid, candidates, items = load_data()
     user_ids, item_ids, targets, seen, eligible = build_eval(train, valid, candidates)
     popularity = train.groupby("item_id").size().reindex(item_ids).fillna(0).to_numpy(dtype=np.int32)
@@ -215,9 +217,9 @@ def main():
                   mf_training_unique_user_item_pairs=int(train.drop_duplicates(["user_id", "item_id"]).shape[0]),
                   tfidf_vocabulary_size=vocab_size,
                   outputs_use="validation sanity check; use a separate test split for final claims")
-    (OUT / "config.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
-    (OUT / "metrics.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
-    pd.DataFrame(metric_rows).to_csv(OUT / "per_user_ndcg.csv", index=False)
+    (output_dir / "config.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
+    (output_dir / "metrics.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
+    pd.DataFrame(metric_rows).to_csv(output_dir / "per_user_ndcg.csv", index=False)
     examples = []
     for model, rec_lists in all_recs.items():
         for user_idx in range(min(10, len(user_ids))):
@@ -226,10 +228,13 @@ def main():
                                  "item_id": item_ids[item_idx], "train_popularity": int(popularity[item_idx]),
                                  "is_long_tail": bool(tail[item_idx]),
                                  "validation_relevant": item_idx in targets[user_idx]})
-    pd.DataFrame(examples).to_csv(OUT / "top_n_examples.csv", index=False)
+    pd.DataFrame(examples).to_csv(output_dir / "top_n_examples.csv", index=False)
     print(json.dumps(metrics, indent=2), flush=True)
-    print(f"Saved experiment artifacts to {OUT}", flush=True)
+    print(f"Saved experiment artifacts to {output_dir}", flush=True)
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run W6 recommendation baselines")
+    parser.add_argument("--output-dir", default=str(OUT),
+                        help="Output directory (default outputs/w6; use a new directory to preserve previous runs)")
+    main(parser.parse_args().output_dir)

@@ -1,0 +1,25 @@
+{
+  "success": false,
+  "message": "STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT",
+  "iterations": 500,
+  "objective_initial": 157126.5803415122,
+  "objective_final": 4868.8825241092945,
+  "observed_train_rows": 427957,
+  "unobserved_cells_in_objective": 0,
+  "objective": "0.5*sum_observed((r_ui - mu - b_u - b_i - p_u.q_i)^2) + L2 regularization",
+  "warm_start": "C:\\SEMES_7\\SISREK\\ProjectSisrek\\outputs\\w6_followup\\observed_only_mf_500iter_factors.npz",
+  "max_iterations": 500,
+  "score_metrics": {
+    "config": "observed_only_mf_continued_500iter",
+    "penalty": null,
+    "tail_bonus": null,
+    "ndcg@10": 0.0027775944651294267,
+    "catalog_coverage@10": 0.10143717312002813,
+    "average_item_popularity@10": 280.9105316455696,
+    "long_tail_exposure@10": 0.16945991561181434,
+    "long_tail_slots": 20081,
+    "relevant_long_tail_slots": 1,
+    "users_evaluated": 11850,
+    "unique_recommended_items": 2308
+  }
+}
