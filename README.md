@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Proyek Sistem Rekomendasi Tiro
 
 ## W6 — Baseline dan sanity check
@@ -45,3 +46,6 @@ Gunakan baseline yang tersimpan di `outputs/w6/` sebagai input audit. Jangan men
 - `outputs/w6_sanity_final/`: folder contoh untuk hasil sanity check baru.
 
 Validation telah digunakan untuk evaluasi; data yang tersedia tidak mencakup test set independen.
+=======
+# Proyek-Sistem-Rekomendasi-Tiro
+>>>>>>> origin/main
