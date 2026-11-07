@@ -1,0 +1,40 @@
+{
+  "version": "cp3-v1",
+  "seed": 42,
+  "split_for_selection": "validation",
+  "top_k": 10,
+  "primary_metric": "ndcg@10",
+  "secondary_metric": "recall@10",
+  "experiments": {
+    "E1": {
+      "model": "popularity",
+      "purpose": "Shared non-personalised baseline",
+      "fixed": {"definition": "training interaction count per item"},
+      "grid": {}
+    },
+    "E2": {
+      "model": "mf",
+      "purpose": "Collaborative baseline (Truncated SVD MF)",
+      "fixed": {"max_iter": 7000, "rating_values": "explicit 1-5"},
+      "grid": {"factors": [32, 64, 128]}
+    },
+    "E3": {
+      "model": "tfidf",
+      "purpose": "Additional content-based baseline (TF-IDF CBF)",
+      "fixed": {"min_df": 2, "fields": ["title", "content_text_basic"]},
+      "grid": {"max_features": [5000, 10000, 20000], "ngram_max": [1, 2]}
+    },
+    "E4": {
+      "model": "mf_rerank",
+      "purpose": "Track C: popularity-aware reranking of the selected E2 MF (RQ1, RQ2)",
+      "fixed": {"mf_factors": "selected_E2"},
+      "grid": {"alpha": [0, 1, 5, 10, 20], "beta": [0, 6, 12, 18, 24]}
+    }
+  },
+  "selection_rules": {
+    "E1": "no tuning",
+    "E2": "max validation ndcg@10; ties -> recall@10 -> fewer factors",
+    "E3": "max validation ndcg@10; ties -> recall@10 -> smaller max_features -> ngram_max=1",
+    "E4": "max long_tail_exposure@10 subject to ndcg@10 >= 0.95 * ndcg@10 of the selected E2 MF; ties -> catalog_coverage@10 -> smaller alpha+beta; the full alpha x beta grid is reported as the RQ2 trade-off curve"
+  }
+}

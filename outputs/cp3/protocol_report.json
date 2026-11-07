@@ -1,0 +1,44 @@
+{
+  "protocol": {
+    "split": "official absolute-timestamp split (no reshuffle, no new split)",
+    "train_file": "interactions_train.csv",
+    "validation_file": "interactions_validation.csv",
+    "candidate_file": "candidate_items_warm.csv",
+    "item_file": "items.csv",
+    "relevant_rating_min": 4.0,
+    "top_k": 10,
+    "long_tail_max_train_interactions": 5,
+    "head_item_share": 0.2,
+    "candidate_policy": "shared warm candidate universe minus each user's training items",
+    "evaluable_user_policy": "user has >=1 training interaction and >=1 relevant validation item in the warm candidate universe"
+  },
+  "checks": {
+    "train_rows": 427957,
+    "validation_rows": 41284,
+    "train_users": 54483,
+    "train_items": 22753,
+    "validation_users": 15748,
+    "validation_users_seen_in_train": 14175,
+    "validation_rows_relevant": 33993,
+    "validation_rows_relevant_warm_items": 30327,
+    "evaluable_users": 11850,
+    "evaluable_relevant_rows": 24707,
+    "candidate_items": 22753,
+    "candidate_ids_unique": true,
+    "candidates_subset_of_train_items": true,
+    "candidates_with_metadata": 22753,
+    "train_max_timestamp": 1628643090562,
+    "validation_min_timestamp": 1628643861248,
+    "temporal_order_respected": true,
+    "train_validation_pair_overlap": 0,
+    "long_tail_candidates": 5818,
+    "head_candidates": 4551,
+    "relevant_long_tail_targets": 4599,
+    "item_feature_fields": [
+      "item_id",
+      "title",
+      "content_text_basic"
+    ],
+    "test_split_used": false
+  }
+}

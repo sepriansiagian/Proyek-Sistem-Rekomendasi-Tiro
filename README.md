@@ -1,51 +1,54 @@
-<<<<<<< HEAD
 # Proyek Sistem Rekomendasi Tiro
 
-## W6 — Baseline dan sanity check
+Kelompok 3 — Track C: Popularity Bias & Long Tail. Dataset: Amazon Reviews 2023 – Musical Instruments (5-core).
 
-### Persiapan
-
-Gunakan Python 3.10+ dan install dependensi berikut dari root repository:
+Gunakan Python 3.10+ dan install dependensi dari root repository:
 
 ```powershell
 python -m pip install numpy pandas scipy
 ```
 
-### Jalankan empat baseline
+## CP3 — Desain eksperimen
+
+| File | Isi |
+|---|---|
+| `cp3_protocol.py` | Protokol warm-start bersama: split, evaluable users, candidate set, metrik (Recall@10, NDCG@10, metrik Track C), dan guard leakage. Test split terkunci. |
+| `cp3_models.py` | Popularity, Truncated SVD MF, TF-IDF CBF, dan MF popularity-aware reranking yang bisa diparametrisasi. |
+| `configs/cp3_search_space.json` | Experiment matrix E1–E4, search space, seed, dan aturan model selection. |
+| `run_experiments.py` | Menjalankan grid pada validation, mencatat setiap run, dan menerapkan aturan selection. |
+| `check_w6_reproduction.py` | Memastikan pipeline CP3 mereproduksi metrik W6, serta menambahkan Recall@10. |
+| `tests/test_cp3_protocol.py` | Sanity test metrik, ranking, dan guard leakage. |
+| `reports/cp3/` | Draf teks Overleaf (Experimental Setup) dan progress report CP3. |
+
+```powershell
+python cp3_protocol.py                                 # laporan protokol + cek leakage -> outputs/cp3/protocol_report.json
+python -m unittest discover -s tests -v                # sanity test metrik
+python check_w6_reproduction.py                        # reproduksi W6 + Recall@10 -> outputs/cp3/w6_reproduction.json
+python run_experiments.py --dry-run                    # daftar run id dalam experiment matrix
+python run_experiments.py --experiments E1 E2 E3       # jalankan baseline (W10-W12)
+python run_experiments.py --experiments E4             # Track C, memakai factors MF terpilih dari E2
+python run_experiments.py --select                     # terapkan aturan selection -> experiments/selection.json
+```
+
+Setiap run menulis `experiments/runs/<run_id>/` (config, metrik, metrik per user) dan menambahkan satu baris ke `experiments/experiment_log.csv`. Baris tersebut memuat commit git, flag *dirty*, sidik data (SHA-256), seed, dan versi config. Commit perubahan kode sebelum menjalankan run yang akan dilaporkan.
+
+Penamaan run: `<Eksperimen>_<model>_<parameter>_s<seed>`, misalnya `E2_mf_f64_s42` atau `E4_mf_rerank_f64_a10_b12_s42`.
+
+## W6 — Baseline dan sanity check
 
 ```powershell
 python run_baselines.py --output-dir outputs/w6_final
-```
-
-Skrip menjalankan Popularity, Truncated SVD MF, TF-IDF CBF, dan popularity-aware MF reranking. Hasilnya meliputi konfigurasi, metrik, NDCG per pengguna, dan contoh Top-10. Opsi `--output-dir` menyimpan run di folder baru sehingga hasil lama tidak tertimpa.
-
-### Jalankan sanity check
-
-Sanity check membaca baseline tersimpan di `outputs/w6/metrics.json`, membangun ulang ranking, lalu memeriksa jumlah rekomendasi, keunikan item, filtering item yang sudah dilihat, dan kecocokan metrik.
-
-```powershell
 python run_sanity_audit.py --output-dir outputs/w6_sanity_final
 ```
 
-Gunakan baseline yang tersimpan di `outputs/w6/` sebagai input audit. Jangan menghapus atau mengganti file baseline tersebut sebelum audit selesai.
+`run_baselines.py` menjalankan Popularity, Truncated SVD MF, TF-IDF CBF, dan popularity-aware MF reranking. Sanity check membaca `outputs/w6/metrics.json`, membangun ulang ranking, lalu memeriksa jumlah rekomendasi, keunikan item, filtering item yang sudah dilihat, dan kecocokan metrik. Jangan menghapus atau mengganti isi `outputs/w6/`.
 
-### Data dan aturan evaluasi
+## Data dan aturan evaluasi
 
-- `data/interactions_train.csv`: data untuk fitting model dan menghitung popularitas.
-- `data/interactions_validation.csv`: target evaluasi; tidak dipakai untuk fitting.
-- `data/candidate_items_warm.csv`: candidate set yang sama untuk seluruh baseline.
-- `data/items.csv`: metadata produk untuk TF-IDF CBF.
-- Relevansi: rating validation ≥4; cutoff Top-10.
-- Item yang sudah dilihat pengguna pada training dikeluarkan dari rekomendasi.
-- Long-tail: jumlah interaksi training item ≤5.
-
-### Output utama
-
-- `outputs/w6/`: konfigurasi, metrik, NDCG per pengguna, contoh Top-10, dan sanity check yang sudah tersimpan.
-- `outputs/w6_sanity_rerun/`: hasil sanity check run tambahan.
-- `outputs/w6_sanity_final/`: folder contoh untuk hasil sanity check baru.
-
-Validation telah digunakan untuk evaluasi; data yang tersedia tidak mencakup test set independen.
-=======
-# Proyek-Sistem-Rekomendasi-Tiro
->>>>>>> origin/main
+- `data/interactions_train.csv`: satu-satunya sumber untuk fitting model dan menghitung popularitas.
+- `data/interactions_validation.csv`: target evaluasi dan model selection; tidak dipakai untuk fitting.
+- `data/candidate_items_warm.csv`: candidate universe yang sama untuk seluruh model.
+- `data/items.csv`: metadata produk (`title`, `content_text_basic`) untuk TF-IDF CBF.
+- Relevansi: rating validation ≥4. Cutoff Top-10. Item train milik user dikeluarkan dari kandidat.
+- Long-tail: item dengan ≤5 interaksi training.
+- Test set tidak ada di repository dan tidak digunakan sebelum evaluasi final W13.
