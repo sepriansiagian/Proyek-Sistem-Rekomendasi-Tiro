@@ -11,7 +11,7 @@
     "ndcg@10": 0.007827223148600449,
     "catalog_coverage@10": 0.009537203885201951,
     "catalog_items_recommended@10": 217,
-    "average_item_popularity@10": 605.6074936708861,
+    "average_item_popularity@10": 605.6086582278481,
     "long_tail_exposure@10": 0.0,
     "users_evaluated": 11850
   },
@@ -27,7 +27,7 @@
     "ndcg@10": 0.0078275681183319,
     "catalog_coverage@10": 0.017931701314112425,
     "catalog_items_recommended@10": 408,
-    "average_item_popularity@10": 602.8193333333334,
+    "average_item_popularity@10": 602.818835443038,
     "long_tail_exposure@10": 0.003586497890295359,
     "users_evaluated": 11850
   }
