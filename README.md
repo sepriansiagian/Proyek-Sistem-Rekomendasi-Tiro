@@ -34,6 +34,26 @@ Setiap run menulis `experiments/runs/<run_id>/` (config, metrik, metrik per user
 
 Penamaan run: `<Eksperimen>_<model>_<parameter>_s<seed>`, misalnya `E2_mf_f64_s42` atau `E4_mf_rerank_f64_a10_b12_s42`.
 
+## W10 — Evaluasi validation dan uji awal Track C
+
+Hanya split validation yang dipakai; test terkunci. `BATCH = 128` di `run_experiments.py` (E4 menghitung 25 matriks skor per batch). Commit kode lebih dulu agar `git_dirty` di log bersih.
+
+```powershell
+python cp3_protocol.py                                      # cek leakage (temporal, overlap=0, 11.850 evaluable users)
+python -m unittest discover -s tests -v                     # test metrik + validasi manual 3 user
+python run_experiments.py --experiments E1 E2 E3            # baseline (10 run)
+python run_experiments.py --experiments E4                  # Track C (25 run)
+python run_experiments.py --select                          # -> experiments/selection.json
+python make_w10_report.py                                   # -> reports/w10/hasil_validation.{csv,md}
+```
+
+| File | Isi |
+|---|---|
+| `make_w10_report.py` | Membaca `experiments/experiment_log.csv`; membuat tabel Recall@10, NDCG@10, coverage, long-tail exposure/recall. |
+| `reports/w10/hasil_validation.md` / `.csv` | Tabel E1, E2, E3, dan E4 terpilih + grid alpha x beta. |
+| `reports/w10/analisis_awal.md` | Analisis awal hasil, anomali, keterbatasan, dan insight W11–W12. |
+| `reports/w10/validasi_manual_metrik.md` | Perhitungan manual metrik untuk 3 user (test: `tests/test_manual_metric_validation.py`). |
+
 ## W6 — Baseline dan sanity check
 
 ```powershell

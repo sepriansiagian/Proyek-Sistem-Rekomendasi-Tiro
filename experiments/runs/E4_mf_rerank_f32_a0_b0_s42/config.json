@@ -1,0 +1,33 @@
+{
+  "run_id": "E4_mf_rerank_f32_a0_b0_s42",
+  "experiment": "E4",
+  "model": "mf_rerank",
+  "params": {
+    "mf_factors": 32,
+    "alpha": 0,
+    "beta": 0
+  },
+  "fixed": {
+    "mf_factors": "selected_E2"
+  },
+  "seed": 42,
+  "split": "validation",
+  "config_version": "cp3-v1",
+  "protocol": {
+    "split": "official absolute-timestamp split (no reshuffle, no new split)",
+    "train_file": "interactions_train.csv",
+    "validation_file": "interactions_validation.csv",
+    "candidate_file": "candidate_items_warm.csv",
+    "item_file": "items.csv",
+    "relevant_rating_min": 4.0,
+    "top_k": 10,
+    "long_tail_max_train_interactions": 5,
+    "head_item_share": 0.2,
+    "candidate_policy": "shared warm candidate universe minus each user's training items",
+    "evaluable_user_policy": "user has >=1 training interaction and >=1 relevant validation item in the warm candidate universe"
+  },
+  "git_commit": "91dedd6",
+  "git_dirty": false,
+  "data_sha": "221578629c83",
+  "started_at": "2026-11-14T13:02:02+00:00"
+}
