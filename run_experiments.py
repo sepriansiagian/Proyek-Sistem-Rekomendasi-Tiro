@@ -33,7 +33,7 @@ LOG = EXP_DIR / "experiment_log.csv"
 SELECTION = EXP_DIR / "selection.json"
 PARAM_ABBREV = {"factors": "f", "max_features": "mf", "ngram_max": "ng", "alpha": "a", "beta": "b",
                 "mf_factors": "f"}
-BATCH = 1024
+BATCH = 128
 
 
 # ------------------------------------------------------------ provenance ---
