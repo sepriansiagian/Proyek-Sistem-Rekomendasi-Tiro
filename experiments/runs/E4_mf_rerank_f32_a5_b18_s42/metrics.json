@@ -1,0 +1,15 @@
+{
+  "recall@10": 0.008994824977797113,
+  "ndcg@10": 0.006249456187799785,
+  "catalog_coverage@10": 0.03445699468201995,
+  "catalog_items_recommended@10": 784,
+  "average_recommended_popularity@10": 422.5459240506329,
+  "long_tail_exposure@10": 0.3500337552742616,
+  "head_exposure@10": 0.6499662447257384,
+  "exposure_gini@10": 0.9947015583422857,
+  "long_tail_relevant_hits@10": 19,
+  "long_tail_recall@10": 0.004131332898456186,
+  "users_evaluated": 11850,
+  "users_with_k_recs": 11850,
+  "users_with_seen_item_recommended": 0
+}

@@ -1,0 +1,87 @@
+{
+  "E1": {
+    "run_id": "E1_popularity_s42",
+    "params": {},
+    "rule": "no tuning",
+    "git_commit": "91dedd6",
+    "metrics": {
+      "recall@10": 0.0133554925542815,
+      "ndcg@10": 0.0092205296008739,
+      "catalog_coverage@10": 0.0007911044697402,
+      "catalog_items_recommended@10": "18",
+      "average_recommended_popularity@10": 1361.9062025316457,
+      "long_tail_exposure@10": 0.0,
+      "head_exposure@10": 1.0,
+      "exposure_gini@10": 0.9995508848371828,
+      "long_tail_relevant_hits@10": "0",
+      "long_tail_recall@10": 0.0,
+      "users_evaluated": "11850"
+    }
+  },
+  "E2": {
+    "run_id": "E2_mf_f32_s42",
+    "params": {
+      "factors": 32
+    },
+    "rule": "max validation ndcg@10; ties -> recall@10 -> fewer factors",
+    "git_commit": "91dedd6",
+    "metrics": {
+      "recall@10": 0.013077216878271,
+      "ndcg@10": 0.0078272231486004,
+      "catalog_coverage@10": 0.0095372038852019,
+      "catalog_items_recommended@10": "217",
+      "average_recommended_popularity@10": 605.6086582278481,
+      "long_tail_exposure@10": 0.0,
+      "head_exposure@10": 1.0,
+      "exposure_gini@10": 0.9972175227600164,
+      "long_tail_relevant_hits@10": "0",
+      "long_tail_recall@10": 0.0,
+      "users_evaluated": "11850"
+    }
+  },
+  "E3": {
+    "run_id": "E3_tfidf_mf20000_ng1_s42",
+    "params": {
+      "max_features": 20000,
+      "ngram_max": 1
+    },
+    "rule": "max validation ndcg@10; ties -> recall@10 -> smaller max_features -> ngram_max=1",
+    "git_commit": "91dedd6",
+    "metrics": {
+      "recall@10": 0.0122359727822621,
+      "ndcg@10": 0.0073270902748337,
+      "catalog_coverage@10": 0.7238166395640135,
+      "catalog_items_recommended@10": "16469",
+      "average_recommended_popularity@10": 35.31557805907173,
+      "long_tail_exposure@10": 0.206379746835443,
+      "head_exposure@10": 0.3248860759493671,
+      "exposure_gini@10": 0.7074773985384409,
+      "long_tail_relevant_hits@10": "49",
+      "long_tail_recall@10": 0.0106544901065449,
+      "users_evaluated": "11850"
+    }
+  },
+  "E4": {
+    "run_id": "E4_mf_rerank_f32_a5_b12_s42",
+    "params": {
+      "mf_factors": 32,
+      "alpha": 5,
+      "beta": 12
+    },
+    "rule": "max long_tail_exposure@10 subject to ndcg@10 >= 0.95 * ndcg@10 of the selected E2 MF; ties -> catalog_coverage@10 -> smaller alpha+beta; the full alpha x beta grid is reported as the RQ2 trade-off curve",
+    "git_commit": "91dedd6",
+    "metrics": {
+      "recall@10": 0.0122127402859463,
+      "ndcg@10": 0.0074957175319026,
+      "catalog_coverage@10": 0.0239089350854832,
+      "catalog_items_recommended@10": "544",
+      "average_recommended_popularity@10": 556.8641097046414,
+      "long_tail_exposure@10": 0.0986160337552742,
+      "head_exposure@10": 0.9013839662447256,
+      "exposure_gini@10": 0.99623092016799,
+      "long_tail_relevant_hits@10": "5",
+      "long_tail_recall@10": 0.0010871928680147,
+      "users_evaluated": "11850"
+    }
+  }
+}
